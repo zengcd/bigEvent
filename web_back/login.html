@@ -25,16 +25,77 @@
                 <i class="iconfont icon-key"></i>
                 <input type="text" class="input_txt" placeholder="邮箱/手机号">
                 <input type="password" class="input_pass" placeholder="密码">
+                <!-- 如果登陆按钮是表单提交，那么点击之后就会跳转，这里不需要跳转
+                解决方案：1.把submit的默认事件阻止
+                 2.把按钮改成普通button -->
+                <!-- <input type="submit" class="input_sub" value="登 录"> -->
                 <input type="button" class="input_sub" value="登 录">
             </form>
         </div>
 
     </div>
+    <!-- 引入jQuery文件 -->
     <script src="./js/jquery-1.12.4.min.js"></script>
-    <script src="../../tools/config.js"></script>
+    <script src="./tools/config.js"></script>
     <script src="./tools/user.js"></script>
-    <script>
 
+    <script>
+        /*步骤：
+        1.对提交按钮进行处理
+        方式：1.组织默认提交行为--2.修改为普通按钮
+        2.给按钮设置点击事件
+        3.检测两个输入框内容是否为空
+        4.如果内容检测通过，将内容发送给接口进行检测
+        5.接受响应内容
+            5.1成功时跳转到index.html
+            5.2失败时继续宁错误提示即可
+        */
+
+        var $input_txt = $('.input_txt');//用户名输入框-----$是做标记使用的
+        var $input_pass = $('.input_pass');//密码输入框
+        // 1.设置事件
+        $('.input_sub').on('click', function () {
+            // 2.获取书输入内容进行检测
+            // --trim()清楚两边空字符串
+            var username = $input_txt.val().trim();
+            var password = $input_pass.val().trim();
+
+            if (username === '' || password === '') {
+                alert('请输入用户名和密码~');
+                return;
+            }
+            // console.log('输入内容了');
+            // 将输入内容发送给接口
+
+            // user.login({
+            //     user_name: username,
+            //     password: password
+            // }, function (res) {
+            //     // 根据响应状态进行判断
+            //     // code==200为成功400是失败
+            //     // console.log(res);
+
+            //     if (res.code == '200') {
+            //         // 成功就跳转到首页
+            //         location.href = './index.html';
+
+            //     } else {
+            //         alert('您输入的用户名或密码错误~');
+            //     }
+            // });
+            user.login({
+                data: {
+                    user_name: username,
+                    password: password
+                },
+                success: function () {
+                    location.href = './index.html';
+                },
+                fail: function () {
+                    alert('您输入的用户名或密码错误~');
+                }
+            })
+        })
     </script>
 </body>
 

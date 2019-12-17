@@ -50,7 +50,9 @@
         <div class="user_center_link">
             <a href="user.html" onclick="setMenu(3,0)" target="main_frame">个人中心</a>
             <img src="images/2.jpg" alt="person">
-            <a href="#" class="logout"><i class="iconfont icon-tuichu"></i> 退出</a>
+            <!-- 点击退出按钮，请求接口，跳转到登录页面 -->
+            <!-- 添加类名，方便获取 -->
+            <a href="javascript:;" class="logout"><i class="iconfont icon-tuichu"></i> 退出</a>
         </div>
     </div>
 
@@ -61,6 +63,91 @@
 
 
 
+    <!-- 下面js是左侧列表的动态效果 -->
+    <script>
+        var $level01 = $('.level01');
+        var $subli = $('.level02 li')
+        $level01.click(function () {
+            $level01.not($(this)).removeClass('active');
+            $(this).addClass('active');
+
+            if ($(this).next().hasClass('level02')) {
+                $(this).next().slideToggle();
+                $(this).find('b').toggleClass('rotate0');
+            } else {
+                $subli.removeClass('active');
+            }
+        })
+
+        $subli.click(function () {
+            $subli.not($(this)).removeClass('active');
+            $(this).addClass('active');
+
+            if (!$(this).parent().prev().hasClass('active')) {
+                $level01.removeClass('active');
+                $(this).parent().prev().addClass('active');
+            }
+        })
+
+        function resizeFrame() {
+            var frame_w = $('#main_body').outerWidth();
+            var frame_h = $('#main_body').outerHeight();
+            $('#main_frame').css({ 'width': frame_w, 'height': frame_h });
+        }
+
+        resizeFrame();
+
+        $(window).resize(function () {
+            resizeFrame();
+        })
+
+
+        function setMenu(m, n) {
+            $level01.eq(m).addClass('active').siblings().not('.level02').removeClass('active');
+            if (m != 1) {
+                $('.level02').slideUp();
+            } else {
+                $('.level02').slideDown();
+                $('.level02').children().eq(n).addClass('active').siblings().removeClass('active');
+            }
+        }
+
+    </script>
+    <!-- -------------------------- -->
+    <script src="./js/jquery-1.12.4.min.js"></script>
+    <script src="./tools/config.js"></script>
+    <script src="./tools/user.js"></script>
+    <script>
+        /*
+        退出功能
+        步骤
+        1.点击退出按钮
+        2.设置确定是否退出
+        3.如果确定，请求接口进行退出操作
+        4.跳转到登录页面
+        */
+        var $logout = $('.logout');
+        //1.添加事件
+        $logout.on('click', function () {
+            //2.询问用户是否确认退出
+            // 用confirm('是否确定退出~'):可以弹出框，并且有两个点击按钮，也是window方法
+            // 点击确定返回true，，点击取消返回false
+            if (!confirm('请问确定要退出么？')) {
+                return;
+            } else {
+                // console.log('发送请求');
+                user.logout({
+                    success: function () {
+                        location.href = './login.html'
+                    }, fail: function () {
+                        alert('网络不好，请稍后再试！');
+                    }
+                });
+
+            }
+        })
+
+    </script>
 
 </body>
 
