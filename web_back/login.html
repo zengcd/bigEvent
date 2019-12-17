@@ -34,56 +34,7 @@
     <script src="../../tools/config.js"></script>
     <script src="./tools/user.js"></script>
     <script>
-        var $ipt_txt = $(".input_txt");
-        var $ipt_pass = $(".input_pass");
 
-        $(".input_sub").on('click', function () {
-            var username = $ipt_txt.val().trim();
-            var password = $ipt_pass.val().trim();
-            if (username === '' || password === '') {
-                alert('请完整填写登录内容~');
-                return;
-            }
-            // $.ajax({
-            //     type: 'post',
-            //     url: LOGIN,
-            //     data: {
-            //         user_name: username,
-            //         password: password
-            //     },
-            //     success: function (res) {
-            //         if (res.code === 200) {
-            //             location.href = './index.html';
-            //         } else {
-            //             alert('用户名或密码错误');
-            //         }
-            //     }
-            // })
-            // 2-------------------------------------
-            // user.login({
-            //     user_name: username,
-            //     password: password
-            // }, function (res) {
-            //     if (res.code === 200) {
-            //         location.href = './index.html';
-            //     }
-            //     else {
-            //         alert('用户名或密码错误');
-            //     }
-            // });
-            user.login({
-                data: {
-                    username: username,
-                    password: password
-                },
-                success: function () {
-                    location.href = './index.html';
-                },
-                fail: function () {
-                    alert('用户名或密码错误');
-                }
-            })
-        })
     </script>
 </body>
 
